@@ -5,7 +5,9 @@ import time
 import spamwatch
 
 import telegram.ext as tg
+from aiohttp import ClientSession
 from redis import StrictRedis
+from Python_ARQ import ARQ
 from pyrogram import Client, errors
 from motor.motor_asyncio import AsyncIOMotorClient as MongoClient
 from telethon import TelegramClient
@@ -61,6 +63,9 @@ if ENV:
         TIGERS = set(int(x) for x in os.environ.get("TIGERS", "").split())
     except ValueError:
         raise Exception("Your tiger users list does not contain valid integers.")
+
+    aiohttpsession = ClientSession()
+    arq = ARQ(ARQ_API_URL, ARQ_API_KEY, aiohttpsession)
 
     INFOPIC = bool(os.environ.get("INFOPIC", False))
     EVENT_LOGS = os.environ.get("EVENT_LOGS", None)
